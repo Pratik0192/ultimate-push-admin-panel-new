@@ -18,7 +18,7 @@ const Sidebar = () => {
       <hr />
       <div className="center">
         <ul>
-          <Link to='/' style={{textDecoration:'none'}}>
+          <Link to='/dashboard' style={{textDecoration:'none'}}>
             <li>
               <DashboardIcon className='icon'/>
               <span>Dashboard</span>
@@ -38,19 +38,19 @@ const Sidebar = () => {
               <span>Notifications</span>
             </li>
           </Link>
-          <Link to='/pricing' style={{textDecoration:'none'}} >
+          <Link to='/viewpricing' style={{textDecoration:'none'}} >
             <li>
               <NotificationsIcon className='icon' />
               <span>Pricing</span>
             </li>
           </Link>
-          <Link to='/features' style={{textDecoration:'none'}} >
+          <Link to='/viewfeatures' style={{textDecoration:'none'}} >
             <li>
               <NotificationsIcon className='icon' />
               <span>Features</span>
             </li>
           </Link>
-          <Link to='/testi' style={{textDecoration:'none'}} >
+          <Link to='/viewtesti' style={{textDecoration:'none'}} >
             <li>
               <NotificationsIcon className='icon' />
               <span>Testimonial</span>
@@ -73,11 +73,13 @@ const Sidebar = () => {
               <span>Profile</span>
             </li>
           </Link>
+          <Link to='/' style={{textDecoration:'none'}} >
+            <li>
+              <LogoutIcon className='icon' />
+              <span>Log Out</span>
+            </li>
+          </Link>
           
-          <li>
-            <LogoutIcon className='icon' />
-            <span>Log Out</span>
-          </li>
         </ul>
       </div>
       <div className="bottom">

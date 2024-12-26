@@ -1,56 +1,72 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Login.scss';
+import main_logo from '../../assets/main_logo.png'
 
 const Login = () => {
-  const [isLogin, setIsLogin] = useState(true); // State to toggle between login and signup
+  const [userDetails, setUserDetails] = useState({
+    email: "",
+    password: ""
+  });
 
-  const toggleForm = () => {
-    setIsLogin((prevState) => !prevState);
+  const handleInputChange = (e) => {
+    setUserDetails({
+      ...userDetails,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("submitted: ", userDetails);
   };
 
   return (
-    /* From Uiverse.io by Yaya12085 */
-    <div className="login">
-      <div className="form-container">
-        <p className="title">{isLogin ? 'Login' : 'Register'}</p>
-        <form className="form">
-          {!isLogin && (
-            <div className="input-group">
-              <label htmlFor="email">Email</label>
-              <input type="email" name="email" id="email" placeholder="" />
-            </div>
-          )}
-          <div className="input-group">
-            <label htmlFor="username">Username</label>
-            <input type="text" name="username" id="username" placeholder="" />
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="brand-logo">
+          <img src={main_logo} alt="logo" />
+        </div>
+        <h4>Welcome Back!</h4>
+        <h6 className="subtitle">Sign in to continue</h6>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-group">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={userDetails.email}
+              onChange={handleInputChange}
+              required
+            />
           </div>
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
-            <input type="password" name="password" id="password" placeholder="" />
+          <div className="form-group">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={userDetails.password}
+              onChange={handleInputChange}
+              required
+            />
           </div>
-          {isLogin && (
-            <div className="forgot">
-              <a rel="noopener noreferrer" href="#">
-                Forgot Password ?
-              </a>
-            </div>
-          )}
-          <button className="sign" style={{marginTop:'1rem'}}>{isLogin ? 'Sign In' : 'Sign Up'}</button>
+          <button type="submit" className="btn-primary">Sign In</button>
         </form>
-
-        <p className="signup" style={{ marginTop: '1rem' }}>
-          {isLogin ? "Don't have an account?" : 'Already have an account?'}
-          <a
-            rel="noopener noreferrer"
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              toggleForm();
-            }}
-          >
-            {isLogin ? ' Register' : ' Login '}
-          </a>
-        </p>
+        <div className="options">
+          <label className="remember-me">
+            <input type="checkbox" />
+            Keep me signed in
+          </label>
+          <Link to="/forgot-password" className="forgot-password">Forgot password?</Link>
+        </div>
+        <div className="social-login">
+          <button className="btn-facebook">
+            <i className="icon-facebook"></i> Connect with Facebook
+          </button>
+        </div>
+        <div className="register-link">
+          Don't have an account? <Link to="/register">Create</Link>
+        </div>
       </div>
     </div>
   );
