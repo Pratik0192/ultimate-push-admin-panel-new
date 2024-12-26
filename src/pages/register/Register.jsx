@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './Register.scss';
 import main_logo from '../../assets/main_logo.png'
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from '../../store/userSlice';
 
 const Register = () => {
   const [userDetails, setUserDetails] = useState({
@@ -14,6 +16,11 @@ const Register = () => {
 
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
   const [passwordErrorMsg, setPasswordErrorMsg] = useState("");
+
+  const dispatch = useDispatch();
+  const { loading, statusCode, authMessage } = useSelector(state => state.user);
+
+  const navigate = useNavigate();
 
   const emailValidator = (email) => {
     if (!email) {
@@ -47,8 +54,16 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(registerUser(userDetails));
+
     console.log("user details: ", userDetails);
   };
+
+  useEffect(() => {
+    if(statusCode === 200) {
+      navigate('/');
+    }
+  }, [statusCode, navigate]);
 
   return (
     <div className="auth-container">
@@ -115,8 +130,17 @@ const Register = () => {
             />
             I agree to all Terms & Conditions
           </div>
-          <button type="submit" className="btn-primary">Sign Up</button>
+          <button type="submit" className="btn-primary" disabled={loading} >
+            {loading ? "signing up..." : "sign up"}
+          </button>
         </form>
+
+        {statusCode !== 0 && (
+          <div className={`status-message ${statusCode === 200 ? 'success' : 'error'}`}>
+            {authMessage}
+          </div>
+        )}
+
         <div className="text-center mt-4">
           Already have an account? <Link to="/">Login</Link>
         </div>

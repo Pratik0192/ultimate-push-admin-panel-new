@@ -18,7 +18,6 @@ import ViewFeature from './pages/Features/ViewFeature'
 const App = () => {
   return (
     <div>
-      <BrowserRouter>
         <Routes>
           <Route path='/' element={ <Login /> } />
           <Route path='/register' element={ <Register /> } />
@@ -34,7 +33,6 @@ const App = () => {
           <Route path='/viewtesti' element = { <ViewTestimonial /> } />
           <Route path='/addtesti' element = { <Testimonial /> } />
         </Routes>
-      </BrowserRouter>
     </div>
   )
 }

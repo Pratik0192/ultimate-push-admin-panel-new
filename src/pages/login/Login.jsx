@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Login.scss';
 import main_logo from '../../assets/main_logo.png'
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../store/userSlice';
 
 const Login = () => {
   const [userDetails, setUserDetails] = useState({
     email: "",
     password: ""
   });
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, statusCode, authMessage, isUserLoggedIn } = useSelector(
+    (state) => state.user
+  );
 
   const handleInputChange = (e) => {
     setUserDetails({
@@ -18,7 +26,12 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submitted: ", userDetails);
+    
+    dispatch(loginUser(userDetails)).then((action) => {
+      if(action.payload?.status === 200) {
+        navigate("/dashboard");
+      }
+    }); 
   };
 
   return (
@@ -52,6 +65,17 @@ const Login = () => {
           </div>
           <button type="submit" className="btn-primary">Sign In</button>
         </form>
+
+        {authMessage && (
+          <div 
+            className={`auth-message ${
+              statusCode === 200 ? "success" : "error"
+            }`}
+          >
+            {authMessage}
+          </div>
+        )}
+
         <div className="options">
           <label className="remember-me">
             <input type="checkbox" />

@@ -59,7 +59,6 @@
         }
       }
     }
-
     .options {
       display: flex;
       justify-content: space-between;
@@ -120,4 +119,25 @@
       }
     }
   }
+}
+.auth-message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.auth-message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.auth-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }
