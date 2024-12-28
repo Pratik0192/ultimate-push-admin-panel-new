@@ -28,6 +28,7 @@ const Login = () => {
     e.preventDefault();
     
     dispatch(loginUser(userDetails)).then((action) => {
+      console.log("Payload: ", action.payload);
       if(action.payload?.status === 200) {
         navigate("/dashboard");
       }
