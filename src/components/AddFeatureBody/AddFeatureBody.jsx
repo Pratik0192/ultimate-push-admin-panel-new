@@ -5,7 +5,7 @@ import { createFeatures } from '../../store/featureSlice';
 
 const AddFeatureBody = () => {
   const [formData, setFormData] = useState({
-    image: '',
+    svgPath: '',
     title: '',
     description: '',
   });
@@ -28,7 +28,7 @@ const AddFeatureBody = () => {
       alert('Feature created successfully!');
 
       setFormData({ 
-        image: '', 
+        svgPath: '', 
         title: '', 
         description: '' 
       });
@@ -47,8 +47,8 @@ const AddFeatureBody = () => {
           <input
             type="text"
             id="image"
-            name="image"
-            value={formData.image}
+            name="svgPath"
+            value={formData.svgPath}
             onChange={handleInputChange}
             placeholder="Enter image path"
           />

@@ -39,9 +39,9 @@ const ViewFeatureBody = () => {
     <div className="features-table-container">
       {loading ? 
         (
-          <div class="loader">
-            <div class="loader_cube loader_cube--color"></div>
-            <div class="loader_cube loader_cube--glowing"></div>
+          <div className="loader">
+            <div className="loader_cube loader_cube--color"></div>
+            <div className="loader_cube loader_cube--glowing"></div>
           </div>
         )
         :
@@ -71,7 +71,7 @@ const ViewFeatureBody = () => {
                     <td>{feature.title}</td>
                     <td>{feature.description}</td>
                     <td>
-                      <button className="delete-btn">Delete</button>
+                      <button onClick={() => handleDelete(feature._id)} className="delete-btn">Delete</button>
                     </td>
                   </tr>
                 ))}

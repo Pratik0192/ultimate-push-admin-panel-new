@@ -26,7 +26,7 @@ export const createPricingOption = createAsyncThunk(
 export const deletePricingOption = createAsyncThunk(
   "pricing/deletePricingOption",
   async (pricingId) => {
-    const response = await axios.post(`${import.meta.env.VITE_BASEURL}/api/v1/feature/${pricingId}`);
+    const response = await axios.post(`${import.meta.env.VITE_BASEURL}/api/v1/pricing/delete/${pricingId}`);
     console.log(response.data);
     return response.data;
   }
@@ -86,7 +86,7 @@ const pricingSlice = createSlice({
       })
       .addCase(deletePricingOption.fulfilled, (state, action) => {
         state.data = state.data.filter(
-          (item) => item._id !== action.payload.pricingId
+          (item) => item._id !== action.payload.pricingOptionId
         );
         state.loading = false;
       })

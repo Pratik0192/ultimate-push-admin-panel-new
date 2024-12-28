@@ -53,9 +53,9 @@ const ViewPricingBody = () => {
     <div className="pricing-container">
       {loading ? 
         (
-          <div class="loader">
-            <div class="loader_cube loader_cube--color"></div>
-            <div class="loader_cube loader_cube--glowing"></div>
+          <div className="loader">
+            <div className="loader_cube loader_cube--color"></div>
+            <div className="loader_cube loader_cube--glowing"></div>
           </div>
         )
         :
