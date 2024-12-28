@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import './AddPriceBody.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPricingOption } from '../../store/pricingSlice'
 
 const AddPriceBody = () => {
+
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.pricing);
+
   const [formData, setFormData] = useState({
     name: '',
     price: '',
@@ -32,9 +38,22 @@ const AddPriceBody = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data Submitted:', formData);
+    try {
+      await dispatch(createPricingOption(formData)).unwrap();
+      alert("added sucessfullly");
+
+      setFormData({ 
+        name: "", 
+        price: "", 
+        features: [""] 
+      });
+
+    } catch (error) {
+      console.error("cannot add", error);
+      alert("cannot add");
+    }
   };
 
   return (
@@ -86,7 +105,9 @@ const AddPriceBody = () => {
           </button>
         </div>
 
-        <button type="submit" className="submit-btn">Submit</button>
+        <button type="submit" className="submit-btn" disabled={loading}>
+          {loading ? "Submitting" : "Submit"}
+        </button>
       </form>
     </div>
   );

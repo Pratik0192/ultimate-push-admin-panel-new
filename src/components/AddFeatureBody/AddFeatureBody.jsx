@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './AddFeatureBody.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { createFeatures } from '../../store/featureSlice';
 
 const AddFeatureBody = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +9,9 @@ const AddFeatureBody = () => {
     title: '',
     description: '',
   });
+
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.features);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -16,9 +21,21 @@ const AddFeatureBody = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data Submitted:', formData);
+    try {
+      await dispatch(createFeatures(formData)).unwrap();
+      alert('Feature created successfully!');
+
+      setFormData({ 
+        image: '', 
+        title: '', 
+        description: '' 
+      });
+    } catch (error) {
+      console.error('cannot create feature:', error);
+      alert('Failed to create feature.');
+    }
   };
 
   return (
@@ -60,7 +77,9 @@ const AddFeatureBody = () => {
           />
         </div>
 
-        <button type="submit" className="submit-btn">Submit</button>
+        <button type="submit" className="submit-btn" disabled={loading}>
+          {loading ? "Submitting..." : "Submit"}
+        </button>
       </form>
     </div>
   );

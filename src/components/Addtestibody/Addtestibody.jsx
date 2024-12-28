@@ -1,7 +1,12 @@
 import {React, useState } from 'react'
 import './Addtestibody.scss'
+import { useDispatch, useSelector } from 'react-redux';
+import { createTestimonial } from '../../store/testimonialSlice';
 
 const Addtestibody = () => {
+
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.testimonials);
 
   const [formData, setFormData] = useState({
     img: '',
@@ -29,9 +34,23 @@ const Addtestibody = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Testimonial Data Submitted:', formData);
+    try {
+      await dispatch(createTestimonial(formData)).unwrap();
+      alert("Testimonial added sucessfully");
+
+      setFormData({
+        img: "",
+        clientImg: "",
+        name: "",
+        company: "",
+        categories: [],
+      });
+    } catch (error) {
+      console.error("error while adding:", error);
+      alert("failed to add");
+    }
   };
 
   return (
@@ -109,7 +128,13 @@ const Addtestibody = () => {
           />
         </div>
 
-        <button type="submit" className="submit-btn">Submit</button>
+        <button 
+          type="submit" 
+          className="submit-btn"
+          disabled={loading}
+        >
+          {loading ? "Submitting..." : "Submit"}
+        </button>
       </form>
     </div>
   )
