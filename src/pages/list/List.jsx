@@ -3,6 +3,7 @@ import './List.scss'
 import Sidebar from '../../components/sidebar/Sidebar'
 import Navbar from '../../components/navbar/Navbar'
 import Datatable from '../../components/datatable/Datatable'
+import { Table } from '@mui/material'
 
 const List = () => {
   return (
@@ -10,7 +11,7 @@ const List = () => {
       <Sidebar />
       <div className="listContainer">
         <Navbar/>
-        <Datatable/>
+        <Table />
       </div>
     </div>
   )
