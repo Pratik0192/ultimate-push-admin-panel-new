@@ -14,6 +14,7 @@ import Register from './pages/register/Register'
 import ViewPricing from './pages/Pricing/ViewPricing'
 import ViewTestimonial from './pages/Testimonial/ViewTestimonial'
 import ViewFeature from './pages/Features/ViewFeature'
+import CustomerData from './pages/CustomerData/CustomerData'
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
           <Route path='/addfeatures' element = { <AddFeature /> } />
           <Route path='/viewtesti' element = { <ViewTestimonial /> } />
           <Route path='/addtesti' element = { <Testimonial /> } />
+          <Route path='/customerdata' element={ <CustomerData /> }  />
         </Routes>
     </div>
   )

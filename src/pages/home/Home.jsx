@@ -6,6 +6,8 @@ import Widget from '../../components/widget/Widget'
 import Featured from '../../components/featured/Featured'
 import Chart from '../../components/chart/Chart'
 import Table from '../../components/table/Table'
+import CustomerTable from '../../components/customerTable/CustomerTable'
+
 import { 
   fetchAllDomains,
   getDomainsCount,
@@ -54,8 +56,12 @@ const Home = () => {
           <Chart />
         </div>
         <div className="listcontainer">
-          <div className="listTitle">latest Transactions</div>
+          <div className="listTitle">latest Websites</div>
           <Table />
+        </div>
+        <div className="listcontainer">
+          <div className="listTitle">All Customers</div>
+          <CustomerTable />
         </div>
       </div>
     </div>

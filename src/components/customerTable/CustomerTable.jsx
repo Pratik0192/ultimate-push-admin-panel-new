@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -22,22 +21,34 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { fetchAllDomains } from '../../store/domainSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-
-function createData(id, name, subscribers, unsubscribers,  notification,  active) {
+function createData(id, CustomerName, PlanName, subscribtionStartDate, subscribtionEndDate, noOfWebsites) {
   return {
     id,
-    name,
-    subscribers,
-    unsubscribers,
-    notification,
-    active,
+    CustomerName,
+    PlanName,
+    subscribtionStartDate,
+    subscribtionEndDate,
+    noOfWebsites,
   };
 }
 
-let rows = [];
+const rows = [
+  createData(1, 'John Doe', 'Basic Plan', '2024-01-01', '2024-12-31', 1),
+  createData(2, 'Jane Smith', 'Pro Plan', '2024-02-15', '2025-02-14', 5),
+  createData(3, 'Alice Johnson', 'Enterprise Plan', '2023-09-01', '2024-08-31', 10),
+  createData(4, 'Robert Brown', 'Pro Plan', '2024-03-01', '2025-02-28', 3),
+  createData(5, 'Emily Davis', 'Basic Plan', '2024-05-01', '2024-11-30', 2),
+  createData(6, 'Michael Wilson', 'Enterprise Plan', '2024-01-01', '2024-12-31', 15),
+  createData(7, 'Sarah Martinez', 'Pro Plan', '2024-06-15', '2025-06-14', 4),
+  createData(8, 'Chris Lee', 'Basic Plan', '2024-07-01', '2025-06-30', 1),
+  createData(9, 'Jessica Taylor', 'Pro Plan', '2023-12-01', '2024-11-30', 6),
+  createData(10, 'Matthew Anderson', 'Enterprise Plan', '2024-04-01', '2025-03-31', 12),
+  createData(11, 'Sophia Thomas', 'Basic Plan', '2024-01-15', '2024-07-14', 1),
+  createData(12, 'Daniel Moore', 'Pro Plan', '2024-02-01', '2025-01-31', 7),
+  createData(13, 'Olivia Harris', 'Enterprise Plan', '2023-10-01', '2024-09-30', 20),
+];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -57,35 +68,35 @@ function getComparator(order, orderBy) {
 
 const headCells = [
   {
-    id: 'name',
+    id: 'CustomerName',
     numeric: false,
     disablePadding: true,
-    label: 'name',
+    label: 'Customer Name',
   },
   {
-    id: 'subscribers',
+    id: 'PlanName',
     numeric: true,
     disablePadding: false,
-    label: 'Subcribers',
+    label: 'Plan Name',
   },
   {
-    id: 'unsubscribers',
+    id: 'subscribtionStartDate',
     numeric: true,
     disablePadding: false,
-    label: 'Unsubscribers',
+    label: 'Subscription Start Date',
   },
   {
-    id: 'activesubscribers',
+    id: 'subscribtionEndDate',
     numeric: true,
     disablePadding: false,
-    label: 'Active Subscribers',
-  }
-  /* {
-    id: 'active',
+    label: 'Subscription End Date',
+  },
+  {
+    id: 'noOfWebsites',
     numeric: true,
     disablePadding: false,
-    label: 'IsActive',
-  }, */
+    label: 'No of Websites',
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -93,46 +104,46 @@ function EnhancedTableHead(props) {
     props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
-  };
+};
 
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
+return (
+  <TableHead>
+    <TableRow>
+      <TableCell padding="checkbox">
+        <Checkbox
+          color="primary"
+          indeterminate={numSelected > 0 && numSelected < rowCount}
+          checked={rowCount > 0 && numSelected === rowCount}
+          onChange={onSelectAllClick}
+          inputProps={{
+            'aria-label': 'select all desserts',
+          }}
+        />
+      </TableCell>
+      {headCells.map((headCell) => (
+        <TableCell
+          key={headCell.id}
+          align={headCell.numeric ? 'right' : 'left'}
+          padding={headCell.disablePadding ? 'none' : 'normal'}
+          sortDirection={orderBy === headCell.id ? order : false}
+        >
+          <TableSortLabel
+            active={orderBy === headCell.id}
+            direction={orderBy === headCell.id ? order : 'asc'}
+            onClick={createSortHandler(headCell.id)}
           >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
+            {headCell.label}
+            {orderBy === headCell.id ? (
+              <Box component="span" sx={visuallyHidden}>
+                {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+              </Box>
+            ) : null}
+          </TableSortLabel>
+        </TableCell>
+      ))}
+    </TableRow>
+  </TableHead>
+);
 }
 
 EnhancedTableHead.propTypes = {
@@ -175,7 +186,7 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Websites
+          Customers
         </Typography>
       )}
       {numSelected > 0 ? (
@@ -201,24 +212,11 @@ EnhancedTableToolbar.propTypes = {
 
 export default function EnhancedTable() {
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('subscribers');
+  const [orderBy, setOrderBy] = React.useState('PlanName');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-
-  const dispatch = useDispatch();
-  const domainsList = useSelector((state) => state.domains.data);
-
-  useEffect(() => {
-    dispatch(fetchAllDomains());
-  }, []);
-
-  useEffect(() => {
-    rows = domainsList;
-  }, [domainsList]);
-
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -228,7 +226,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = domainsList.map((n) => n._id);
+      const newSelected = rows.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
@@ -269,14 +267,14 @@ export default function EnhancedTable() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - domainsList.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
-      [...domainsList]
+      [...rows]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage, domainsList],
+    [order, orderBy, page, rowsPerPage],
   );
 
   return (
@@ -295,7 +293,7 @@ export default function EnhancedTable() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={domainsList.length}
+              rowCount={rows.length}
             />
             <TableBody>
               {visibleRows.map((row, index) => {
@@ -311,7 +309,7 @@ export default function EnhancedTable() {
                     tabIndex={-1}
                     key={row.id}
                     selected={isItemSelected}
-                    sx={{ cursor: 'pointer', textAlign:'center' }}
+                    sx={{ cursor: 'pointer' }}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
@@ -328,12 +326,14 @@ export default function EnhancedTable() {
                       scope="row"
                       padding="none"
                     >
-                      {row.name}
+                      <Link to='/customerdata' style={{textDecoration:'none', color:'black'}} >
+                        {row.CustomerName}
+                      </Link>
                     </TableCell>
-                    <TableCell align="right">{row.subscribers}</TableCell>
-                    <TableCell align="right">{row.unsubscribers}</TableCell>
-                    {/* <TableCell align="right">{row.notification}</TableCell> */}
-                    <TableCell align="right">{row.activeSubscribers}</TableCell>
+                    <TableCell align="right">{row.PlanName}</TableCell>
+                    <TableCell align="right">{row.subscribtionStartDate}</TableCell>
+                    <TableCell align="right">{row.subscribtionEndDate}</TableCell>
+                    <TableCell align="right">{row.noOfWebsites}</TableCell>
                   </TableRow>
                 );
               })}
@@ -352,7 +352,7 @@ export default function EnhancedTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={domainsList.length}
+          count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
