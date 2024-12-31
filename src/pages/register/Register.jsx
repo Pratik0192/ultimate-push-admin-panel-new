@@ -52,10 +52,10 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(registerUser(userDetails));
-
+    const { country, agreeToTerms, ...restObj } = userDetails;
+    await dispatch(registerUser(restObj));
     console.log("user details: ", userDetails);
   };
 

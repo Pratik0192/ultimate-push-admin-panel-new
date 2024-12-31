@@ -7,7 +7,7 @@ export const registerUser = createAsyncThunk(
   async (userDetails) => {
     let payload = {};
     await axios.post(
-      `${import.meta.env.VITE_BASEURL}/api/v1/register`, 
+      `${import.meta.env.VITE_BASEURL}/api/v1/admin/register`, 
       userDetails
     ).then(res => {
       payload.status = 200;
@@ -25,7 +25,7 @@ export const loginUser = createAsyncThunk(
   async (userDetails) => {
     let payload = {};
     await axios.post(
-      `${import.meta.env.VITE_BASEURL}/api/v1/login`, 
+      `${import.meta.env.VITE_BASEURL}/api/v1/admin/login`, 
       userDetails
     ).then(res => {
       payload.status = 200;
@@ -44,7 +44,7 @@ export const fetchUserDetails = createAsyncThunk(
   'user/fetchUserDetails',
   async (token) => {
     const res = await axios.get(
-      `${import.meta.env.VITE_BASEURL}/api/v1/userdetails`,
+      `${import.meta.env.VITE_BASEURL}/api/v1/admin/details`,
       {
         headers: {
           'Content-Type': 'application/json',

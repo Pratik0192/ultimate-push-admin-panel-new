@@ -6,7 +6,7 @@ import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalance
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 
-const Widget = ({ type }) => {
+const Widget = ({ type, quantity }) => {
 
   let data;
 
@@ -19,7 +19,7 @@ const Widget = ({ type }) => {
         isMoney: false,
         link: "See all Websites",
         icon: <PersonOutlineOutlinedIcon className='icon' style={{color:'crimson', backgroundColor:'rgba(255, 0, 0, 0.2)'}} />,
-        num: '3'
+        num: quantity
       };
       break;
     case "subscribers":
@@ -28,7 +28,7 @@ const Widget = ({ type }) => {
         isMoney: false,
         link: "view all subscribers",
         icon: <ShoppingCartOutlinedIcon className='icon' style={{color:'goldenrod', backgroundColor:'rgba(255, 0, 0, 0.2)'}} />,
-        num: '209'
+        num: quantity
       };
       break;
     case "campaigns":
@@ -37,7 +37,7 @@ const Widget = ({ type }) => {
       isMoney: true,
       link: "View all campaigns",
       icon: <MonetizationOnOutlinedIcon className='icon' style={{color:'green', backgroundColor:'rgba(255, 0, 0, 0.2)'}} />,
-      num: '2'
+      num: quantity
     };
     break;
     case "notifications":
@@ -46,7 +46,7 @@ const Widget = ({ type }) => {
       isMoney: true,
       link: "view notifications",
       icon: <AccountBalanceWalletOutlinedIcon className='icon' style={{color:'purple', backgroundColor:'rgba(255, 0, 0, 0.2)'}} />,
-      num: '18'
+      num: quantity
     };
     break;
       default:

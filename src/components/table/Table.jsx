@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -21,6 +22,9 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import { fetchAllDomains } from '../../store/domainSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 function createData(id, name, subscribers, unsubscribers,  notification,  active) {
   return {
@@ -33,21 +37,7 @@ function createData(id, name, subscribers, unsubscribers,  notification,  active
   };
 }
 
-const rows = [
-  createData(1, 'Sample', 49, 19, 41, 'Active'),
-  createData(2, 'AutumnCode', 52, 29, 56, 'Active'),
-  createData(3, '66bioLinks', 72, 13, 2, 'Not Active'),
-  createData(4, 'Sample', 49, 199, 17, 'Active'),
-  createData(5, 'AutumnCode', 452, 25, 11, 'Not Active'),
-  createData(6, 'sample 5', 22, 16, 0, 'Not Active'),
-  createData(7, 'myntra', 49, 199, 43, 'Active'),
-  createData(8, 'AutumnCode', 42, 21, 2, 'Active'),
-  createData(9, '66bioLinks', 22, 6, 9, 'Active'),
-  createData(10, 'sample 3', 49, 199, 11, 'Active'),
-  createData(11, 'AutumnCode', 40, 29, 13, 'Active'),
-  createData(12, 'shopify', 62, 14, 9, 'Not Active'),
-  
-];
+let rows = [];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -82,20 +72,20 @@ const headCells = [
     id: 'unsubscribers',
     numeric: true,
     disablePadding: false,
-    label: 'unsubscribers',
+    label: 'Unsubscribers',
   },
   {
-    id: 'notification',
+    id: 'activesubscribers',
     numeric: true,
     disablePadding: false,
-    label: 'Notifications sent',
-  },
-  {
+    label: 'Active Subscribers',
+  }
+  /* {
     id: 'active',
     numeric: true,
     disablePadding: false,
     label: 'IsActive',
-  },
+  }, */
 ];
 
 function EnhancedTableHead(props) {
@@ -217,6 +207,19 @@ export default function EnhancedTable() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+
+  const dispatch = useDispatch();
+  const domainsList = useSelector((state) => state.domains.data);
+
+  useEffect(() => {
+    dispatch(fetchAllDomains());
+  }, []);
+
+  useEffect(() => {
+    rows = domainsList;
+  }, [domainsList]);
+
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -225,7 +228,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
+      const newSelected = domainsList.map((n) => n._id);
       setSelected(newSelected);
       return;
     }
@@ -266,14 +269,14 @@ export default function EnhancedTable() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - domainsList.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
-      [...rows]
+      [...domainsList]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rowsPerPage, domainsList],
   );
 
   return (
@@ -292,10 +295,10 @@ export default function EnhancedTable() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={domainsList.length}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
+              {domainsList.map((row, index) => {
                 const isItemSelected = selected.includes(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -329,8 +332,8 @@ export default function EnhancedTable() {
                     </TableCell>
                     <TableCell align="right">{row.subscribers}</TableCell>
                     <TableCell align="right">{row.unsubscribers}</TableCell>
-                    <TableCell align="right">{row.notification}</TableCell>
-                    <TableCell align="right">{row.active}</TableCell>
+                    {/* <TableCell align="right">{row.notification}</TableCell> */}
+                    <TableCell align="right">{row.activeSubscribers}</TableCell>
                   </TableRow>
                 );
               })}
@@ -349,7 +352,7 @@ export default function EnhancedTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={domainsList.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
