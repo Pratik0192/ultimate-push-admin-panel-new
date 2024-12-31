@@ -12,3 +12,16 @@
         stroke: lightgray;
     }
 }
+.title-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.filter-dropdown{
+    width: 200px;
+    .MuiInputBase-root{
+        background-color: #f9fafb;
+        border-radius: 5px;
+        border-color: 1px solid #e5e7eb;
+    }
+}
