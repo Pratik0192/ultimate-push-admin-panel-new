@@ -7,7 +7,7 @@ export const registerUser = createAsyncThunk(
   async (userDetails) => {
     let payload = {};
     await axios.post(
-      `${import.meta.env.VITE_BASEURL}/api/v1/admin/register`, 
+      `${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/admin/register`,
       userDetails
     ).then(res => {
       payload.status = 200;
@@ -25,7 +25,7 @@ export const loginUser = createAsyncThunk(
   async (userDetails) => {
     let payload = {};
     await axios.post(
-      `${import.meta.env.VITE_BASEURL}/api/v1/admin/login`, 
+      `${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/admin/login`,
       userDetails
     ).then(res => {
       payload.status = 200;
@@ -44,7 +44,7 @@ export const fetchUserDetails = createAsyncThunk(
   'user/fetchUserDetails',
   async (token) => {
     const res = await axios.get(
-      `${import.meta.env.VITE_BASEURL}/api/v1/admin/details`,
+      `${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/admin/details`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -61,8 +61,8 @@ export const fetchUserDetails = createAsyncThunk(
 const userSlice = createSlice({
   name: "User",
   initialState: {
-    isUserLoggedIn: false, 
-    userData: null, 
+    isUserLoggedIn: false,
+    userData: null,
     token: null,
     loading: false,
     statusCode: 0,
@@ -104,7 +104,7 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.statusCode = action.payload.status;
         state.authMessage = action.payload.message;
-        if(action.payload.status === 200){
+        if (action.payload.status === 200) {
           state.token = action.payload.token;
           localStorage.setItem("token", action.payload.token);
           state.isUserLoggedIn = true;

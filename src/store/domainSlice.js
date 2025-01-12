@@ -5,7 +5,7 @@ import axios from "axios";
 export const fetchAllDomains = createAsyncThunk(
   'domains/fetchAllDomains',
   async () => {
-    const res = await axios.get(`${import.meta.env.VITE_BASEURL}/api/v1/alldomains/details`);
+    const res = await axios.get(`${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/alldomains/details`);
     console.log(res.data);
     return res.data;
   }
@@ -14,7 +14,7 @@ export const fetchAllDomains = createAsyncThunk(
 export const getDomainsCount = createAsyncThunk(
   'domains/getDomainsCount',
   async () => {
-    const res = await axios.get(`${import.meta.env.VITE_BASEURL}/api/v1/countdomains`);
+    const res = await axios.get(`${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/countdomains`);
     console.log(res.data);
     return res.data.count;
   }
@@ -23,7 +23,7 @@ export const getDomainsCount = createAsyncThunk(
 export const getSubscribersCount = createAsyncThunk(
   'domains/getSubscribersCount',
   async () => {
-    const res = await axios.get(`${import.meta.env.VITE_BASEURL}/api/v1/totalsubscribers/count`);
+    const res = await axios.get(`${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/totalsubscribers/count`);
     console.log(res.data);
     return res.data.count;
   }
@@ -32,7 +32,7 @@ export const getSubscribersCount = createAsyncThunk(
 export const getCampaignsCount = createAsyncThunk(
   'domains/getCampaignsCount',
   async () => {
-    const res = await axios.get(`${import.meta.env.VITE_BASEURL}/api/v1/countcampaigns`);
+    const res = await axios.get(`${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/countcampaigns`);
     console.log(res.data);
     return res.data.count;
   }
@@ -41,7 +41,7 @@ export const getCampaignsCount = createAsyncThunk(
 export const getNotificationsCount = createAsyncThunk(
   'domains/getNotificationsCount',
   async () => {
-    const res = await axios.get(`${import.meta.env.VITE_BASEURL}/api/v1/countnotifications`);
+    const res = await axios.get(`${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/countnotifications`);
     console.log(res.data);
     return res.data.count;
   }

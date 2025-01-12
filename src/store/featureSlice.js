@@ -1,11 +1,11 @@
-import { createSlice, createAsyncThunk} from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios";
 
 
 export const fetchFeatures = createAsyncThunk(
   'features/fetchFeatures',
   async () => {
-    const response = await axios.get(`${import.meta.env.VITE_BASEURL}/api/v1/features`);
+    const response = await axios.get(`${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/features`);
     console.log(response.data);
     return response.data
   }
@@ -15,7 +15,7 @@ export const createFeatures = createAsyncThunk(
   'features/createFeature',
   async (feature) => {
     const response = await axios.post(
-      `${import.meta.env.VITE_BASEURL}/api/v1/feature/create`,
+      `${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/feature/create`,
       feature
     );
     console.log(response.data);
@@ -26,7 +26,7 @@ export const createFeatures = createAsyncThunk(
 export const deleteFeatures = createAsyncThunk(
   'features/deleteFeatures',
   async (featureId) => {
-    const response = await axios.post(`${import.meta.env.VITE_BASEURL}/api/v1/feature/delete/${featureId}`);
+    const response = await axios.post(`${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/feature/delete/${featureId}`);
     console.log(response.data);
     return response.data;
   }
@@ -63,7 +63,7 @@ const featureSlice = createSlice({
         state.loading = false;
       })
 
-    
+
     //for creating
     builder
       .addCase(createFeatures.pending, (state) => {

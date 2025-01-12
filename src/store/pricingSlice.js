@@ -5,7 +5,7 @@ import axios from "axios";
 export const fetchPricingOptions = createAsyncThunk(
   "pricing/fetchPricingOptions",
   async () => {
-    const response = await axios.get(`${import.meta.env.VITE_BASEURL}/api/v1/pricing`);
+    const response = await axios.get(`${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/pricing`);
     console.log(response.data);
     return response.data;
   }
@@ -15,7 +15,7 @@ export const createPricingOption = createAsyncThunk(
   "pricing/createPricingOption",
   async (pricingOption) => {
     const response = await axios.post(
-      `${import.meta.env.VITE_BASEURL}/api/v1/pricing/create`,
+      `${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/pricing/create`,
       pricingOption
     );
     console.log(response.data);
@@ -26,7 +26,7 @@ export const createPricingOption = createAsyncThunk(
 export const deletePricingOption = createAsyncThunk(
   "pricing/deletePricingOption",
   async (pricingId) => {
-    const response = await axios.post(`${import.meta.env.VITE_BASEURL}/api/v1/pricing/delete/${pricingId}`);
+    const response = await axios.post(`${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/pricing/delete/${pricingId}`);
     console.log(response.data);
     return response.data;
   }

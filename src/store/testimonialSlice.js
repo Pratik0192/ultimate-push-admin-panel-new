@@ -5,7 +5,7 @@ import axios from "axios";
 export const fetchTestimonials = createAsyncThunk(
   'testimonials/fetchTestimonials',
   async () => {
-    const res = await axios.get(`${import.meta.env.VITE_BASEURL}/api/v1/testimonials`);
+    const res = await axios.get(`${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/testimonials`);
     console.log(res.data);
     return res.data;
   }
@@ -15,7 +15,7 @@ export const createTestimonial = createAsyncThunk(
   'testimonials/createTestimonial',
   async (testimonial) => {
     const res = await axios.post(
-      `${import.meta.env.VITE_BASEURL}/api/v1/testimonial/create`,
+      `${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/testimonial/create`,
       testimonial
     );
     console.log(res.data);
@@ -27,7 +27,7 @@ export const createTestimonial = createAsyncThunk(
 export const deleteTestimonial = createAsyncThunk(
   'testimonials/deleteTestimonial',
   async (testimonialId) => {
-    const res = await axios.post(`${import.meta.env.VITE_BASEURL}/api/v1/testimonial/delete/${testimonialId}`);
+    const res = await axios.post(`${window.location.hostname === 'localhost' ? import.meta.env.VITE_BASEURL_DEV : import.meta.env.VITE_BASEURL}/api/v1/testimonial/delete/${testimonialId}`);
     console.log(res.data);
     return res.data;
   }
@@ -61,7 +61,7 @@ const testimonialSlice = createSlice({
         console.log(action.error.message);
         state.loading = false;
       });
-      
+
     builder
       .addCase(createTestimonial.pending, (state, action) => {
         state.loading = true;
