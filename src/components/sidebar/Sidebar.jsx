@@ -69,12 +69,6 @@ const Sidebar = () => {
             </li>
           </Link>
 
-          {/* System Health */}
-          <li>
-            <HealthAndSafetyIcon className="icon" />
-            <span>System Health</span>
-          </li>
-
           {/* Settings */}
           <Link to="/settings" style={{ textDecoration: 'none' }}>
             <li>
